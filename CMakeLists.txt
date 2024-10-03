@@ -10,6 +10,7 @@ project(tortoisebot_waypoints)
 find_package(catkin REQUIRED COMPONENTS
   actionlib
   geometry_msgs
+  actionlib_msgs
   nav_msgs
   rospy
   std_msgs
@@ -67,7 +68,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate actions in the 'action' folder
 add_action_files(
   FILES
-  WaypointAction.action
+  Waypoint.action
 )
 
 ## Generate added messages and services with any dependencies listed here
@@ -108,7 +109,7 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  CATKIN_DEPENDS rospy actionlib geometry_msgs nav_msgs std_msgs tf message_runtime
+  CATKIN_DEPENDS rospy actionlib geometry_msgs nav_msgs std_msgs tf message_runtime actionlib_msgs
 )
 
 ###########
@@ -161,10 +162,10 @@ include_directories(
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
-# catkin_install_python(PROGRAMS
-#   scripts/my_python_script
-#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
+catkin_install_python(PROGRAMS
+  src/tortoisebot_action_server.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
@@ -200,9 +201,10 @@ include_directories(
 
 ## Add gtest based cpp test target and link libraries
 # catkin_add_gtest(${PROJECT_NAME}-test test/test_tortoisebot_waypoints.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
-#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
-# endif()
+if(CATKIN_ENABLE_TESTING)
+  find_package(rostest REQUIRED)
+  add_rostest(test/waypoints_test.test)
+endif()
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)

@@ -1,0 +1,11 @@
+<launch>
+  <!-- Start the waypoint action server -->
+  <node name="waypoint_action_server" pkg="tortoisebot_waypoints" type="tortoisebot_action_server.py" output="screen" />
+
+  <!-- Run the test -->
+  <test test-name="waypoints_test" pkg="tortoisebot_waypoints" type="waypoints_test.py">
+    <param name="goal_x" value="$(arg x)" />
+    <param name="goal_y" value="$(arg y)" />
+    <param name="tolerance" value="$(arg tolerance)" />
+  </test>
+</launch>
